@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background-color: rgb(191, 247, 243);
+  color: rgb(147, 204, 24);
+}
+
+h1 {
+  font-size: 5rem;
+  color: rgb(210, 0, 0);
+  line-height: .5;
+  margin: 3rem 0 1rem;
+}
+
+main {
+  width: 1500px;
+  margin: 3rem auto;
+  display: grid;
+  grid-template-columns: 500px 4fr;
+  grid-template-rows: 6.5rem 10rem 20rem 40%;
+
+}
+
+#siteLogo {
+  width: 75px;
+  z-index: 2;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+section {
+  /* This element will be a grid item, but also a flex container */
+  background-color: rgba(135, 135, 135, 0.3);
+  padding: 2rem;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+  justify-content:space-around
+}
+
+section img {
+  width: 460px;
+  max-height: 26rem;
+  border: 10px solid transparent;
+}
+
+section img:hover {
+  border: 10px solid rgb(28, 40, 169);
+  cursor: pointer;
+}
+
+ul {
+  margin: 1rem;
+}
+
+/* -- button -- */
+section + div {
+  background-color: rgba(255, 255, 255, 0.734);
+  color: lightgrey;
+  padding: .5rem 1rem;
+  width: max-content;
+  height: max-content;
+  font-size: .8rem;
+  margin: 1rem;
+}
+
+section + div.clicks-allowed {
+  background-color: rgb(101, 112, 142);
+  cursor: pointer;
+}
