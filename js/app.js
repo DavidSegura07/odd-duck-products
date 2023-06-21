@@ -8,6 +8,7 @@ let maxNumbersOfRounds = 25;
 let currentRoundsNumber = 0;
 
 let duckArr = [];
+let indexArr = [];
 
 // Dom Elements
 let section = document.querySelector('section');
@@ -21,7 +22,7 @@ let results = document.querySelector('ul');
 
 // Global Constructors
 
-function Duck(name, fileExtension ='jpeg') {
+function Duck(name, fileExtension = 'jpg') {
   this.name = name; // this will also be the alt text of our image
   this.src = `photos/${name}.${fileExtension}`;
   this.votes = 0;
@@ -35,16 +36,18 @@ function selectRandomDuck() {
 }
 
 function renderDucks() {
-  let duck1 = selectRandomDuck();
-  let duck2 = selectRandomDuck();
-  let duck3 = selectRandomDuck();
-  while (duck1 === duck2) {
-    goat2 = selectRandomDuck();
-  } while (duck2 === duck3) {
-    goat3 = selectRandomDuck();
-  } while (duck3 === duck1) {
-    goat1 = selectRandomDuck();
+  while (indexArr.length < 6) {
+    let ranNum = selectRandomDuck();
+    if (!indexArr.includes(ranNum)) {
+      indexArr.push(ranNum);
+    }
   }
+
+
+  let duck1 = indexArr.shift();
+  let duck2 = indexArr.shift();
+  let duck3 = indexArr.shift();
+
 
   image1.src = duckArr[duck1].src;
   image2.src = duckArr[duck2].src;
@@ -63,7 +66,7 @@ function handleDuckClick(event) {
   let clickDuck = event.target.alt;
   for (let i = 0; i < duckArr.length; i++) {
     if (clickDuck === duckArr[i].name) {
-      duckArr[i].vote++;
+      duckArr[i].votes++;
       break;
     }
   }
@@ -79,13 +82,66 @@ function handleDuckClick(event) {
 
 function renderResults() {
   // use UL to render the name, views and votes for each goat
-  resultsContainer.innerHTML = '';
   for (let i = 0; i < duckArr.length; i++) {
-    let resultItem = document.createElement('div');
-    resultItem.textContent = `${duckArr[i].name} had ${duckArr[i].votes} votes and was seen ${duckArr[i].views} views.`;
-    resultsContainer.appendChild(resultItem);
+    let li = document.createElement('li')
+    li.textContent = `${duckArr[i].name} had ${duckArr[i].views} view and was voted for ${duckArr[i].votes} times.`;
+    results.appendChild(li);
+  }
+  renderList();
+  renderChart();
+}
+
+function renderList() {
+  for (let i = 0; i < duckArr.length; i++) {
+    let li = document.createElement('li')
+    li.textContent = `${duckArr[i].name} had ${duckArr[i].views} view and was voted for ${duckArr[i].votes} times.`;
+    results.appendChild(li);
   }
 }
+
+function renderChart() {
+  let duckLabelsName = [];
+  let duckVotes = [];
+  let duckViews = [];
+
+  for (let i = 0; i < duckArr.length; i++) {
+    duckLabelsName.push(duckArr[i].name);
+    duckVotes.push(duckArr[i].votes);
+    duckViews.push(duckArr[i].views);
+  }
+
+const ctx = document.getElementById('myChart');
+const config = {
+  type: 'bar',
+  data: {
+    labels: duckLabelsName,
+    datasets: [
+      {
+        label: '# of Votes',
+        data: duckVotes,
+        borderWidth: 1,
+        backgroundColor: 'darkerblue',
+        borderColor: 'darkblue'
+      },
+      {
+        label: '# of Views',
+        data: duckViews,
+        borderWidth: 1
+      }
+    ]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+}
+
+new Chart(ctx, config);
+}
+
 
 let bag = new Duck('bag');
 let banana = new Duck('banana');
@@ -100,7 +156,7 @@ let dragon = new Duck('dragon');
 let pen = new Duck('pen');
 let petSweep = new Duck('pet-sweep');
 let shark = new Duck('shark');
-let sweep = new Duck('sweep','png');
+let sweep = new Duck('sweep', 'png');
 let tauntaun = new Duck('tauntaun');
 let unicorn = new Duck('unicorn');
 let waterCan = new Duck('water-can');
@@ -126,7 +182,7 @@ duckArr.push(bag,
   waterCan,
   wineGlass);
 
-  renderDucks();
+renderDucks();
 
-  section.addEventListener('click', handleDuckClick);
+section.addEventListener('click', handleDuckClick);
 
