@@ -31,6 +31,23 @@ function Duck(name, fileExtension = 'jpg') {
 
 // Global Function
 
+function storeDucks(duckArr) {
+  let stringDuck = JSON.stringify(duckArr);
+  localStorage.setItem('duck', stringDuck);
+}
+
+function getDuck() {
+  let potentialDuckFromLocalStorage = localStorage.getItem('duck');
+  console.log(potentialDuckFromLocalStorage);
+  if (potentialDuckFromLocalStorage) {
+    let parsedDuck = JSON.parse(potentialDuckFromLocalStorage);
+    console.log(parsedDuck)
+    //     console.log(parsedDuck[0].name)
+    duckArr = parsedDuck;
+
+  }
+}
+
 function selectRandomDuck() {
   return Math.floor(Math.random() * duckArr.length);
 }
@@ -47,8 +64,6 @@ function renderDucks() {
   let duck1 = indexArr.shift();
   let duck2 = indexArr.shift();
   let duck3 = indexArr.shift();
-
-
   image1.src = duckArr[duck1].src;
   image2.src = duckArr[duck2].src;
   image3.src = duckArr[duck3].src;
@@ -58,7 +73,10 @@ function renderDucks() {
   duckArr[duck1].views++;
   duckArr[duck2].views++;
   duckArr[duck3].views++;
+
+
 }
+
 
 function handleDuckClick(event) {
   // console.log(event)
@@ -79,6 +97,23 @@ function handleDuckClick(event) {
     renderDucks();
   }
 }
+//Local Storage///////////////////////////////////////////////////////////
+function storeDucks(duckArr) {
+  let stringDuck = JSON.stringify(duckArr);
+  localStorage.setItem('duck', stringDuck);
+}
+
+function getDuck() {
+  let potentialDuckFromLocalStorage = localStorage.getItem('duck');
+  console.log(potentialDuckFromLocalStorage);
+  if (potentialDuckFromLocalStorage) {
+    let parsedDuck = JSON.parse(potentialDuckFromLocalStorage);
+    console.log(parsedDuck)
+    //     console.log(parsedDuck[0].name)
+    duckArr = parsedDuck;
+
+  }
+}
 
 function renderResults() {
   // use UL to render the name, views and votes for each goat
@@ -89,6 +124,7 @@ function renderResults() {
   }
   renderList();
   renderChart();
+  storeDucks(duckArr);
 }
 
 function renderList() {
@@ -110,77 +146,85 @@ function renderChart() {
     duckViews.push(duckArr[i].views);
   }
 
-const ctx = document.getElementById('myChart');
-const config = {
-  type: 'bar',
-  data: {
-    labels: duckLabelsName,
-    datasets: [
-      {
-        label: '# of Votes',
-        data: duckVotes,
-        borderWidth: 1,
-        backgroundColor: 'darkerblue',
-        borderColor: 'darkblue'
-      },
-      {
-        label: '# of Views',
-        data: duckViews,
-        borderWidth: 1
-      }
-    ]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
+  const ctx = document.getElementById('myChart');
+  const config = {
+    type: 'bar',
+    data: {
+      labels: duckLabelsName,
+      datasets: [
+        {
+          label: '# of Votes',
+          data: duckVotes,
+          borderWidth: 1,
+          backgroundColor: 'darkerblue',
+          borderColor: 'darkblue'
+        },
+        {
+          label: '# of Views',
+          data: duckViews,
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
       }
     }
   }
+
+  new Chart(ctx, config);
 }
 
-new Chart(ctx, config);
+// if there are products in local storage then use those products
+// if there are not any products then create those products
+if (localStorage.getItem('duck')) {
+  // get product of local storage
+  console.log('there are ducks')
+  getDuck();
+} else {
+  let bag = new Duck('bag');
+  let banana = new Duck('banana');
+  let bathroom = new Duck('bathroom');
+  let boots = new Duck('boots');
+  let breakfast = new Duck('breakfast');
+  let bubblegum = new Duck('bubblegum');
+  let chair = new Duck('chair');
+  let cthulhu = new Duck('cthulhu');
+  let dogDuck = new Duck('dog-duck');
+  let dragon = new Duck('dragon');
+  let pen = new Duck('pen');
+  let petSweep = new Duck('pet-sweep');
+  let shark = new Duck('shark');
+  let sweep = new Duck('sweep', 'png');
+  let tauntaun = new Duck('tauntaun');
+  let unicorn = new Duck('unicorn');
+  let waterCan = new Duck('water-can');
+  let wineGlass = new Duck('wine-glass');
+
+
+  duckArr.push(bag,
+    banana,
+    bathroom,
+    boots,
+    breakfast,
+    bubblegum,
+    chair,
+    cthulhu,
+    dogDuck,
+    dragon,
+    pen,
+    petSweep,
+    shark,
+    sweep,
+    tauntaun,
+    unicorn,
+    waterCan,
+    wineGlass);
 }
 
-
-let bag = new Duck('bag');
-let banana = new Duck('banana');
-let bathroom = new Duck('bathroom');
-let boots = new Duck('boots');
-let breakfast = new Duck('breakfast');
-let bubblegum = new Duck('bubblegum');
-let chair = new Duck('chair');
-let cthulhu = new Duck('cthulhu');
-let dogDuck = new Duck('dog-duck');
-let dragon = new Duck('dragon');
-let pen = new Duck('pen');
-let petSweep = new Duck('pet-sweep');
-let shark = new Duck('shark');
-let sweep = new Duck('sweep', 'png');
-let tauntaun = new Duck('tauntaun');
-let unicorn = new Duck('unicorn');
-let waterCan = new Duck('water-can');
-let wineGlass = new Duck('wine-glass');
-
-
-duckArr.push(bag,
-  banana,
-  bathroom,
-  boots,
-  breakfast,
-  bubblegum,
-  chair,
-  cthulhu,
-  dogDuck,
-  dragon,
-  pen,
-  petSweep,
-  shark,
-  sweep,
-  tauntaun,
-  unicorn,
-  waterCan,
-  wineGlass);
 
 renderDucks();
 
