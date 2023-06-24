@@ -15,7 +15,7 @@ let section = document.querySelector('section');
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
 let image3 = document.querySelector('section img:nth-child(3)');
-let button = document.querySelector('section + div');
+let button = document.querySelector('section + div div');
 let results = document.querySelector('ul');
 
 
@@ -116,12 +116,13 @@ function getDuck() {
 }
 
 function renderResults() {
+  button.removeEventListener('click', renderResults);
   // use UL to render the name, views and votes for each goat
-  for (let i = 0; i < duckArr.length; i++) {
-    let li = document.createElement('li')
-    li.textContent = `${duckArr[i].name} had ${duckArr[i].views} view and was voted for ${duckArr[i].votes} times.`;
-    results.appendChild(li);
-  }
+  // for (let i = 0; i < duckArr.length; i++) {
+  //   let li = document.createElement('li')
+  //   li.textContent = `${duckArr[i].name} had ${duckArr[i].views} view and was voted for ${duckArr[i].votes} times.`;
+  //   results.appendChild(li);
+  // }
   renderList();
   renderChart();
   storeDucks(duckArr);
@@ -156,8 +157,8 @@ function renderChart() {
           label: '# of Votes',
           data: duckVotes,
           borderWidth: 1,
-          backgroundColor: 'darkerblue',
-          borderColor: 'darkblue'
+          backgroundColor: 'black',
+          borderColor: 'darkyellow'
         },
         {
           label: '# of Views',
@@ -177,6 +178,8 @@ function renderChart() {
 
   new Chart(ctx, config);
 }
+
+// Executable Code
 
 // if there are products in local storage then use those products
 // if there are not any products then create those products
